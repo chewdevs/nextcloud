@@ -1,0 +1,53 @@
+version: '3.2'
+
+services:
+  db:
+    image: mariadb
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=bO8fEHG6o0DQEgLZ8mZc
+      - MARIADB_DATABASE=nexcloud
+      - MARIADB_USER=nexcloud
+      - MARIADB_PASSWORD=zfony2ITSWb35wE27WUc
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - nextcloud-net
+
+  app:
+    image: nextcloud:fpm
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=zfony2ITSWb35wE27WUc
+    volumes:
+      - nextcloud_data:/var/www/html
+    networks:
+      - nextcloud-net
+
+  rp:
+    image: nginx
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+    - 80:80
+    - 443:443
+    networks:
+      - nextcloud-net
+
+networks:
+  nextcloud-net:
+
+volumes:
+  db_data:
+  nextcloud_data:
