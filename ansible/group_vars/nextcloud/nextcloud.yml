@@ -2,4 +2,6 @@ data_disk_mountpoint: /var/lib/docker
 
 nextcloud_fqdn: cloud.chews.fr
 
-nextcloud_version: 15
+mariadb_version: 10.4
+nextcloud_version: 16
+traefik_version: 1.7
